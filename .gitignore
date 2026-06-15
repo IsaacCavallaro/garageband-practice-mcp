@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.npm-cache/
+*.log
+
+.DS_Store
+songs/**/.DS_Store
+
+# GarageBand project packages and rendered audio are usually large/binary
+# session outputs. Keep portable MIDI, MusicXML, selected score PDFs, and
+# practice HTML trackable instead.
+songs/**/*.band/
+songs/**/*.band
+songs/**/*.aif
+songs/**/*.aiff
+songs/**/*.wav
+songs/**/*.m4a
+songs/**/*.mp3
+songs/**/bounces/
+songs/**/audio/

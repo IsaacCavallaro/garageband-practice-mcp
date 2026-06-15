@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "title": "Bach Prelude in C Major BWV 846",
+  "composer": "J. S. Bach",
+  "slug": "bach-prelude-c-major-bwv-846",
+  "createdAt": "2026-06-15T07:19:04.692Z",
+  "updatedAt": "2026-06-15T07:32:46.265Z",
+  "notes": "Public-domain Mutopia MIDI handoff for GarageBand native Score Editor practice.",
+  "contentPolicy": {
+    "accepts": [
+      "User-supplied MIDI files that the user is authorized to use.",
+      "User-supplied MusicXML files that the user is authorized to use.",
+      "Public-domain or open-license catalogue results whose license is visible."
+    ],
+    "searches": [
+      "Search only public-domain/open-license catalogues.",
+      "Mutopia Project is the first supported source because it publishes PDF, MIDI, and LilyPond files under public-domain or Creative Commons terms."
+    ],
+    "rejects": [
+      "Do not search for or download copyrighted MIDI from unauthorized sources.",
+      "Do not represent generated practice material as a transcription of a copyrighted recording."
+    ],
+    "later": [
+      "AI approximation may be added later only from user-provided chords/structure and must be labeled as an arrangement, not a transcription.",
+      "Live KeyLab feedback belongs in a later browser/Web MIDI practice surface, not in the GarageBand handoff."
+    ]
+  },
+  "paths": {
+    "source": "source/",
+    "midi": "midi/",
+    "charts": "charts/",
+    "practice": "practice/",
+    "garagebandNotes": "garageband/README.md",
+    "projectJson": "project.json"
+  },
+  "sources": [
+    {
+      "kind": "mutopia_open_license",
+      "path": "source/wtk1-prelude1.mid",
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV846/wtk1-prelude1/wtk1-prelude1.mid",
+      "provider": "Mutopia Project",
+      "title": "Das Wohltemperierte Clavier I, Praeludium I",
+      "license": "Public Domain",
+      "importedAt": "2026-06-15T07:19:05.954Z"
+    }
+  ],
+  "midiFiles": [
+    {
+      "path": "midi/bach-prelude-c-major-bwv-846.mid",
+      "role": "garageband-handoff",
+      "analysis": {
+        "filePath": "midi/bach-prelude-c-major-bwv-846.mid",
+        "fileName": "bach-prelude-c-major-bwv-846.mid",
+        "ppq": 384,
+        "durationSeconds": 140,
+        "totalTicks": 53760,
+        "tempos": [
+          {
+            "ticks": 0,
+            "bpm": 60
+          }
+        ],
+        "timeSignatures": [
+          {
+            "ticks": 0,
+            "numerator": 4,
+            "denominator": 4
+          }
+        ],
+        "measures": 35,
+        "tracks": [
+          {
+            "index": 0,
+            "name": "Bach Prelude BWV 846 - MIDI",
+            "channel": 0,
+            "instrument": {
+              "number": 0,
+              "name": "acoustic grand piano",
+              "family": "piano"
+            },
+            "noteCount": 549,
+            "range": {
+              "min": 36,
+              "max": 81,
+              "minName": "C2",
+              "maxName": "A5"
+            }
+          },
+          {
+            "index": 1,
+            "name": "Your Piano - Play Along",
+            "channel": 0,
+            "instrument": {
+              "number": 0,
+              "name": "acoustic grand piano",
+              "family": "piano"
+            },
+            "noteCount": 0
+          }
+        ],
+        "overallRange": {
+          "min": 36,
+          "max": 81,
+          "minName": "C2",
+          "maxName": "A5"
+        }
+      },
+      "createdAt": "2026-06-15T07:32:46.263Z"
+    }
+  ],
+  "chartFiles": [
+    {
+      "path": "charts/bach-prelude-c-major-bwv-846-grand-staff.musicxml",
+      "format": "musicxml",
+      "sourceMidiPath": "midi/bach-prelude-c-major-bwv-846.mid",
+      "createdAt": "2026-06-15T07:19:05.997Z"
+    },
+    {
+      "path": "charts/bach-prelude-c-major-bwv-846-mutopia-a4.pdf",
+      "format": "pdf",
+      "sourceMidiPath": "midi/bach-prelude-c-major-bwv-846.mid",
+      "createdAt": "2026-06-15T07:19:06.826Z"
+    }
+  ],
+  "activeMidiPath": "midi/bach-prelude-c-major-bwv-846.mid",
+  "practiceFiles": [
+    {
+      "path": "practice/index.html",
+      "format": "html",
+      "sourceMidiPath": "midi/bach-prelude-c-major-bwv-846.mid",
+      "scorePath": "charts/bach-prelude-c-major-bwv-846-mutopia-a4.pdf",
+      "createdAt": "2026-06-15T07:19:06.831Z"
+    }
+  ]
+}

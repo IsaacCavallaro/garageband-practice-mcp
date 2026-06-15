@@ -1,0 +1,43 @@
+{
+  "name": "garageband-practice-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local MCP server for creating authorized GarageBand song practice projects with MIDI and piano grand-staff chart artifacts.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IsaacCavallaro/garageband-practice-mcp.git"
+  },
+  "keywords": [
+    "garageband",
+    "mcp",
+    "midi",
+    "music-tech",
+    "practice-tools",
+    "typescript"
+  ],
+  "scripts": {
+    "mcp": "node --import tsx src/mcp/server.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "audit:prod": "npm audit --omit=dev",
+    "ci": "npm run check && npm run build && npm test && npm run audit:prod"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "@tonejs/midi": "^2.0.28",
+    "cheerio": "^1.1.2",
+    "midi-file": "^1.2.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
+  }
+}

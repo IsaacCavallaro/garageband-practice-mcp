@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bach Invention 1 Practice Practice</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202124;
+      --muted: #5f6368;
+      --line: #d8dce3;
+      --paper: #fbfbf8;
+      --panel: #ffffff;
+      --accent: #1f7a5c;
+      --accent-strong: #155b44;
+      --warm: #b45f06;
+      --shadow: 0 10px 30px rgba(32, 33, 36, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 19px;
+      line-height: 1.2;
+      margin: 0;
+      font-weight: 720;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .transport {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button, .file-link {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 7px;
+      min-height: 36px;
+      padding: 0 12px;
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    button.primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    button.primary:hover { background: var(--accent-strong); }
+    button:hover, .file-link:hover { border-color: var(--accent); }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(320px, 1fr) 310px;
+      gap: 0;
+      min-height: 0;
+    }
+
+    .score {
+      min-height: 0;
+      border-right: 1px solid var(--line);
+      background: #e9ecef;
+    }
+
+    .score iframe {
+      width: 100%;
+      height: 100%;
+      min-height: calc(100vh - 73px);
+      border: 0;
+      background: #fff;
+    }
+
+    .empty-score {
+      height: 100%;
+      min-height: calc(100vh - 73px);
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      padding: 24px;
+      text-align: center;
+    }
+
+    aside {
+      background: var(--panel);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+    .progress {
+      height: 11px;
+      border-radius: 999px;
+      background: #e6e8eb;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .progress div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--warm));
+    }
+
+    .now {
+      display: grid;
+      gap: 5px;
+    }
+
+    .now strong {
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .now span {
+      color: var(--muted);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .files {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .note-lane {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      display: grid;
+      gap: 8px;
+      max-height: 240px;
+      overflow: auto;
+    }
+
+    .note-row {
+      display: grid;
+      grid-template-columns: 48px 1fr 56px;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .note-row.active {
+      color: var(--accent-strong);
+      font-weight: 750;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        grid-template-columns: 1fr;
+      }
+
+      .transport {
+        justify-content: flex-start;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .score {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        height: 68vh;
+      }
+
+      .score iframe,
+      .empty-score {
+        min-height: 68vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>Bach Invention 1 Practice</h1>
+        <div class="subtitle">J. S. Bach | 22 measures | 80 BPM</div>
+      </div>
+      <div class="transport">
+        <button class="primary" id="play">Play</button>
+        <button id="pause">Pause</button>
+        <button id="stop">Stop</button>
+      </div>
+    </header>
+    <main>
+      <section class="score" aria-label="Practice score">
+        <iframe title="Score" src="../charts/bach-invention-1-mutopia-a4.pdf#toolbar=1&navpanes=0&view=FitH"></iframe>
+      </section>
+      <aside>
+        <div class="metric-grid">
+          <div class="metric"><span>Range</span><strong>C2-C6</strong></div>
+          <div class="metric"><span>Notes</span><strong>458</strong></div>
+          <div class="metric"><span>Tempo</span><strong><span id="tempoValue">100</span>%</strong></div>
+          <div class="metric"><span>Measure</span><strong id="measure">1/22</strong></div>
+        </div>
+
+        <label>
+          Playback tempo
+          <input id="tempo" type="range" min="40" max="130" value="100" step="5">
+        </label>
+
+        <div>
+          <div class="progress"><div id="bar"></div></div>
+        </div>
+
+        <div class="now">
+          <strong id="clock">0:00</strong>
+          <span id="currentNote">Ready</span>
+        </div>
+
+        <div class="files">
+          <a class="file-link" href="../charts/bach-invention-1-mutopia-a4.pdf" target="_blank" rel="noreferrer">Score PDF</a>
+          <a class="file-link" href="../midi/bach-invention-1-practice.mid" target="_blank" rel="noreferrer">MIDI</a>
+        </div>
+
+        <div class="note-lane" id="noteLane"></div>
+      </aside>
+    </main>
+  </div>
+  <script>
+    const PRACTICE = {"title":"Bach Invention 1 Practice","composer":"J. S. Bach","midiHref":"../midi/bach-invention-1-practice.mid","scoreHref":"../charts/bach-invention-1-mutopia-a4.pdf","notes":[{"midi":60,"name":"C4","time":0.1875,"duration":0.1875,"velocity":1,"track":"one","measure":1},{"midi":62,"name":"D4","time":0.375,"duration":0.1875,"velocity":1,"track":"one","measure":1},{"midi":64,"name":"E4","time":0.5625,"duration":0.1875,"velocity":1,"track":"one","measure":1},{"midi":65,"name":"F4","time":0.75,"duration":0.1875,"velocity":1,"track":"one","measure":1},{"midi":62,"name":"D4","time":0.9375,"duration":0.1875,"velocity":1,"track":"one","measure":1},{"midi":64,"name":"E4","time":1.125,"duration":0.1875,"velocity":1,"track":"one","measure":1},{"midi":60,"name":"C4","time":1.3125,"duration":0.1875,"velocity":1,"track":"one","measure":1},{"midi":67,"name":"G4","time":1.5,"duration":0.375,"velocity":1,"track":"one","measure":1},{"midi":48,"name":"C3","time":1.6875,"duration":0.1875,"velocity":1,"track":"two","measure":1},{"midi":50,"name":"D3","time":1.875,"duration":0.1875,"velocity":1,"track":"two","measure":1},{"midi":72,"name":"C5","time":1.875,"duration":0.375,"velocity":1,"track":"one","measure":1},{"midi":52,"name":"E3","time":2.0625,"duration":0.1875,"velocity":1,"track":"two","measure":1},{"midi":53,"name":"F3","time":2.25,"duration":0.1875,"velocity":1,"track":"two","measure":1},{"midi":71,"name":"B4","time":2.25,"duration":0.375,"velocity":1,"track":"one","measure":1},{"midi":50,"name":"D3","time":2.4375,"duration":0.1875,"velocity":1,"track":"two","measure":1},{"midi":52,"name":"E3","time":2.625,"duration":0.1875,"velocity":1,"track":"two","measure":1},{"midi":72,"name":"C5","time":2.625,"duration":0.375,"velocity":1,"track":"one","measure":1},{"midi":48,"name":"C3","time":2.8125,"duration":0.1875,"velocity":1,"track":"two","measure":1},{"midi":55,"name":"G3","time":3,"duration":0.375,"velocity":1,"track":"two","measure":2},{"midi":74,"name":"D5","time":3,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":67,"name":"G4","time":3.1875,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":43,"name":"G2","time":3.375,"duration":0.375,"velocity":1,"track":"two","measure":2},{"midi":69,"name":"A4","time":3.375,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":71,"name":"B4","time":3.5625,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":72,"name":"C5","time":3.75,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":69,"name":"A4","time":3.9375,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":71,"name":"B4","time":4.125,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":67,"name":"G4","time":4.3125,"duration":0.1875,"velocity":1,"track":"one","measure":2},{"midi":74,"name":"D5","time":4.5,"duration":0.375,"velocity":1,"track":"one","measure":2},{"midi":55,"name":"G3","time":4.6875,"duration":0.1875,"velocity":1,"track":"two","measure":2},{"midi":57,"name":"A3","time":4.875,"duration":0.1875,"velocity":1,"track":"two","measure":2},{"midi":79,"name":"G5","time":4.875,"duration":0.375,"velocity":1,"track":"one","measure":2},{"midi":59,"name":"B3","time":5.0625,"duration":0.1875,"velocity":1,"track":"two","measure":2},{"midi":60,"name":"C4","time":5.25,"duration":0.1875,"velocity":1,"track":"two","measure":2},{"midi":77,"name":"F5","time":5.25,"duration":0.375,"velocity":1,"track":"one","measure":2},{"midi":57,"name":"A3","time":5.4375,"duration":0.1875,"velocity":1,"track":"two","measure":2},{"midi":59,"name":"B3","time":5.625,"duration":0.1875,"velocity":1,"track":"two","measure":2},{"midi":79,"name":"G5","time":5.625,"duration":0.375,"velocity":1,"track":"one","measure":2},{"midi":55,"name":"G3","time":5.8125,"duration":0.1875,"velocity":1,"track":"two","measure":2},{"midi":60,"name":"C4","time":6,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":76,"name":"E5","time":6,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":81,"name":"A5","time":6.1875,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":59,"name":"B3","time":6.375,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":79,"name":"G5","time":6.375,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":77,"name":"F5","time":6.5625,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":60,"name":"C4","time":6.75,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":76,"name":"E5","time":6.75,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":79,"name":"G5","time":6.9375,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":62,"name":"D4","time":7.125,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":77,"name":"F5","time":7.125,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":81,"name":"A5","time":7.3125,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":64,"name":"E4","time":7.5,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":79,"name":"G5","time":7.5,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":77,"name":"F5","time":7.6875,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":55,"name":"G3","time":7.875,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":76,"name":"E5","time":7.875,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":74,"name":"D5","time":8.0625,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":57,"name":"A3","time":8.25,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":72,"name":"C5","time":8.25,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":76,"name":"E5","time":8.4375,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":59,"name":"B3","time":8.625,"duration":0.375,"velocity":1,"track":"two","measure":3},{"midi":74,"name":"D5","time":8.625,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":77,"name":"F5","time":8.8125,"duration":0.1875,"velocity":1,"track":"one","measure":3},{"midi":60,"name":"C4","time":9,"duration":0.375,"velocity":1,"track":"two","measure":4},{"midi":76,"name":"E5","time":9,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":74,"name":"D5","time":9.1875,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":52,"name":"E3","time":9.375,"duration":0.375,"velocity":1,"track":"two","measure":4},{"midi":72,"name":"C5","time":9.375,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":71,"name":"B4","time":9.5625,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":54,"name":"F#3","time":9.75,"duration":0.375,"velocity":1,"track":"two","measure":4},{"midi":69,"name":"A4","time":9.75,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":72,"name":"C5","time":9.9375,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":55,"name":"G3","time":10.125,"duration":0.375,"velocity":1,"track":"two","measure":4},{"midi":71,"name":"B4","time":10.125,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":74,"name":"D5","time":10.3125,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":57,"name":"A3","time":10.5,"duration":0.375,"velocity":1,"track":"two","measure":4},{"midi":72,"name":"C5","time":10.5,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":71,"name":"B4","time":10.6875,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":59,"name":"B3","time":10.875,"duration":0.375,"velocity":1,"track":"two","measure":4},{"midi":69,"name":"A4","time":10.875,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":67,"name":"G4","time":11.0625,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":60,"name":"C4","time":11.25,"duration":0.9375,"velocity":1,"track":"two","measure":4},{"midi":66,"name":"F#4","time":11.25,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":69,"name":"A4","time":11.4375,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":67,"name":"G4","time":11.625,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":71,"name":"B4","time":11.8125,"duration":0.1875,"velocity":1,"track":"one","measure":4},{"midi":69,"name":"A4","time":12,"duration":0.375,"velocity":1,"track":"one","measure":5},{"midi":50,"name":"D3","time":12.1875,"duration":0.1875,"velocity":1,"track":"two","measure":5},{"midi":52,"name":"E3","time":12.375,"duration":0.1875,"velocity":1,"track":"two","measure":5},{"midi":62,"name":"D4","time":12.375,"duration":0.375,"velocity":1,"track":"one","measure":5},{"midi":54,"name":"F#3","time":12.5625,"duration":0.1875,"velocity":1,"track":"two","measure":5},{"midi":55,"name":"G3","time":12.75,"duration":0.1875,"velocity":1,"track":"two","measure":5},{"midi":72,"name":"C5","time":12.75,"duration":0.5625,"velocity":1,"track":"one","measure":5},{"midi":52,"name":"E3","time":12.9375,"duration":0.1875,"velocity":1,"track":"two","measure":5},{"midi":54,"name":"F#3","time":13.125,"duration":0.1875,"velocity":1,"track":"two","measure":5},{"midi":50,"name":"D3","time":13.3125,"duration":0.1875,"velocity":1,"track":"two","measure":5},{"midi":74,"name":"D5","time":13.3125,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":55,"name":"G3","time":13.5,"duration":0.375,"velocity":1,"track":"two","measure":5},{"midi":71,"name":"B4","time":13.5,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":69,"name":"A4","time":13.6875,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":47,"name":"B2","time":13.875,"duration":0.375,"velocity":1,"track":"two","measure":5},{"midi":67,"name":"G4","time":13.875,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":66,"name":"F#4","time":14.0625,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":48,"name":"C3","time":14.25,"duration":0.375,"velocity":1,"track":"two","measure":5},{"midi":64,"name":"E4","time":14.25,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":67,"name":"G4","time":14.4375,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":50,"name":"D3","time":14.625,"duration":0.375,"velocity":1,"track":"two","measure":5},{"midi":66,"name":"F#4","time":14.625,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":69,"name":"A4","time":14.8125,"duration":0.1875,"velocity":1,"track":"one","measure":5},{"midi":52,"name":"E3","time":15,"duration":0.375,"velocity":1,"track":"two","measure":6},{"midi":67,"name":"G4","time":15,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":71,"name":"B4","time":15.1875,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":54,"name":"F#3","time":15.375,"duration":0.375,"velocity":1,"track":"two","measure":6},{"midi":69,"name":"A4","time":15.375,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":72,"name":"C5","time":15.5625,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":55,"name":"G3","time":15.75,"duration":0.375,"velocity":1,"track":"two","measure":6},{"midi":71,"name":"B4","time":15.75,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":74,"name":"D5","time":15.9375,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":52,"name":"E3","time":16.125,"duration":0.375,"velocity":1,"track":"two","measure":6},{"midi":72,"name":"C5","time":16.125,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":76,"name":"E5","time":16.3125,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":47,"name":"B2","time":16.5,"duration":0.5625,"velocity":1,"track":"two","measure":6},{"midi":74,"name":"D5","time":16.5,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":71,"name":"B4","time":16.6875,"duration":0.0938,"velocity":1,"track":"one","measure":6},{"midi":72,"name":"C5","time":16.7813,"duration":0.0938,"velocity":1,"track":"one","measure":6},{"midi":74,"name":"D5","time":16.875,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":48,"name":"C3","time":17.0625,"duration":0.1875,"velocity":1,"track":"two","measure":6},{"midi":79,"name":"G5","time":17.0625,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":50,"name":"D3","time":17.25,"duration":0.375,"velocity":1,"track":"two","measure":6},{"midi":71,"name":"B4","time":17.25,"duration":0.375,"velocity":1,"track":"one","measure":6},{"midi":38,"name":"D2","time":17.625,"duration":0.375,"velocity":1,"track":"two","measure":6},{"midi":69,"name":"A4","time":17.625,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":67,"name":"G4","time":17.8125,"duration":0.1875,"velocity":1,"track":"one","measure":6},{"midi":67,"name":"G4","time":18,"duration":0.375,"velocity":1,"track":"one","measure":7},{"midi":43,"name":"G2","time":18.1875,"duration":0.1875,"velocity":1,"track":"two","measure":7},{"midi":45,"name":"A2","time":18.375,"duration":0.1875,"velocity":1,"track":"two","measure":7},{"midi":47,"name":"B2","time":18.5625,"duration":0.1875,"velocity":1,"track":"two","measure":7},{"midi":48,"name":"C3","time":18.75,"duration":0.1875,"velocity":1,"track":"two","measure":7},{"midi":45,"name":"A2","time":18.9375,"duration":0.1875,"velocity":1,"track":"two","measure":7},{"midi":47,"name":"B2","time":19.125,"duration":0.1875,"velocity":1,"track":"two","measure":7},{"midi":43,"name":"G2","time":19.3125,"duration":0.1875,"velocity":1,"track":"two","measure":7},{"midi":50,"name":"D3","time":19.5,"duration":0.375,"velocity":1,"track":"two","measure":7},{"midi":67,"name":"G4","time":19.6875,"duration":0.1875,"velocity":1,"track":"one","measure":7},{"midi":55,"name":"G3","time":19.875,"duration":0.375,"velocity":1,"track":"two","measure":7},{"midi":69,"name":"A4","time":19.875,"duration":0.1875,"velocity":1,"track":"one","measure":7},{"midi":71,"name":"B4","time":20.0625,"duration":0.1875,"velocity":1,"track":"one","measure":7},{"midi":54,"name":"F#3","time":20.25,"duration":0.375,"velocity":1,"track":"two","measure":7},{"midi":72,"name":"C5","time":20.25,"duration":0.1875,"velocity":1,"track":"one","measure":7},{"midi":69,"name":"A4","time":20.4375,"duration":0.1875,"velocity":1,"track":"one","measure":7},{"midi":55,"name":"G3","time":20.625,"duration":0.375,"velocity":1,"track":"two","measure":7},{"midi":71,"name":"B4","time":20.625,"duration":0.1875,"velocity":1,"track":"one","measure":7},{"midi":67,"name":"G4","time":20.8125,"duration":0.1875,"velocity":1,"track":"one","measure":7},{"midi":57,"name":"A3","time":21,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":66,"name":"F#4","time":21,"duration":0.375,"velocity":1,"track":"one","measure":8},{"midi":50,"name":"D3","time":21.1875,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":52,"name":"E3","time":21.375,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":54,"name":"F#3","time":21.5625,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":55,"name":"G3","time":21.75,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":52,"name":"E3","time":21.9375,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":54,"name":"F#3","time":22.125,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":50,"name":"D3","time":22.3125,"duration":0.1875,"velocity":1,"track":"two","measure":8},{"midi":57,"name":"A3","time":22.5,"duration":0.375,"velocity":1,"track":"two","measure":8},{"midi":69,"name":"A4","time":22.6875,"duration":0.1875,"velocity":1,"track":"one","measure":8},{"midi":62,"name":"D4","time":22.875,"duration":0.375,"velocity":1,"track":"two","measure":8},{"midi":71,"name":"B4","time":22.875,"duration":0.1875,"velocity":1,"track":"one","measure":8},{"midi":72,"name":"C5","time":23.0625,"duration":0.1875,"velocity":1,"track":"one","measure":8},{"midi":60,"name":"C4","time":23.25,"duration":0.375,"velocity":1,"track":"two","measure":8},{"midi":74,"name":"D5","time":23.25,"duration":0.1875,"velocity":1,"track":"one","measure":8},{"midi":71,"name":"B4","time":23.4375,"duration":0.1875,"velocity":1,"track":"one","measure":8},{"midi":62,"name":"D4","time":23.625,"duration":0.375,"velocity":1,"track":"two","measure":8},{"midi":72,"name":"C5","time":23.625,"duration":0.1875,"velocity":1,"track":"one","measure":8},{"midi":69,"name":"A4","time":23.8125,"duration":0.1875,"velocity":1,"track":"one","measure":8},{"midi":55,"name":"G3","time":24,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":71,"name":"B4","time":24,"duration":0.375,"velocity":1,"track":"one","measure":9},{"midi":67,"name":"G4","time":24.1875,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":65,"name":"F4","time":24.375,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":64,"name":"E4","time":24.5625,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":62,"name":"D4","time":24.75,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":65,"name":"F4","time":24.9375,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":64,"name":"E4","time":25.125,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":67,"name":"G4","time":25.3125,"duration":0.1875,"velocity":1,"track":"two","measure":9},{"midi":65,"name":"F4","time":25.5,"duration":0.375,"velocity":1,"track":"two","measure":9},{"midi":74,"name":"D5","time":25.6875,"duration":0.1875,"velocity":1,"track":"one","measure":9},{"midi":64,"name":"E4","time":25.875,"duration":0.375,"velocity":1,"track":"two","measure":9},{"midi":72,"name":"C5","time":25.875,"duration":0.1875,"velocity":1,"track":"one","measure":9},{"midi":71,"name":"B4","time":26.0625,"duration":0.1875,"velocity":1,"track":"one","measure":9},{"midi":65,"name":"F4","time":26.25,"duration":0.375,"velocity":1,"track":"two","measure":9},{"midi":69,"name":"A4","time":26.25,"duration":0.1875,"velocity":1,"track":"one","measure":9},{"midi":72,"name":"C5","time":26.4375,"duration":0.1875,"velocity":1,"track":"one","measure":9},{"midi":62,"name":"D4","time":26.625,"duration":0.375,"velocity":1,"track":"two","measure":9},{"midi":71,"name":"B4","time":26.625,"duration":0.1875,"velocity":1,"track":"one","measure":9},{"midi":74,"name":"D5","time":26.8125,"duration":0.1875,"velocity":1,"track":"one","measure":9},{"midi":64,"name":"E4","time":27,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":72,"name":"C5","time":27,"duration":0.375,"velocity":1,"track":"one","measure":10},{"midi":69,"name":"A4","time":27.1875,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":67,"name":"G4","time":27.375,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":65,"name":"F4","time":27.5625,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":64,"name":"E4","time":27.75,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":67,"name":"G4","time":27.9375,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":65,"name":"F4","time":28.125,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":69,"name":"A4","time":28.3125,"duration":0.1875,"velocity":1,"track":"two","measure":10},{"midi":67,"name":"G4","time":28.5,"duration":0.375,"velocity":1,"track":"two","measure":10},{"midi":76,"name":"E5","time":28.6875,"duration":0.1875,"velocity":1,"track":"one","measure":10},{"midi":65,"name":"F4","time":28.875,"duration":0.375,"velocity":1,"track":"two","measure":10},{"midi":74,"name":"D5","time":28.875,"duration":0.1875,"velocity":1,"track":"one","measure":10},{"midi":72,"name":"C5","time":29.0625,"duration":0.1875,"velocity":1,"track":"one","measure":10},{"midi":67,"name":"G4","time":29.25,"duration":0.375,"velocity":1,"track":"two","measure":10},{"midi":71,"name":"B4","time":29.25,"duration":0.1875,"velocity":1,"track":"one","measure":10},{"midi":74,"name":"D5","time":29.4375,"duration":0.1875,"velocity":1,"track":"one","measure":10},{"midi":64,"name":"E4","time":29.625,"duration":0.375,"velocity":1,"track":"two","measure":10},{"midi":73,"name":"C#5","time":29.625,"duration":0.1875,"velocity":1,"track":"one","measure":10},{"midi":76,"name":"E5","time":29.8125,"duration":0.1875,"velocity":1,"track":"one","measure":10},{"midi":65,"name":"F4","time":30,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":74,"name":"D5","time":30,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":70,"name":"A#4","time":30.1875,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":69,"name":"A4","time":30.375,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":73,"name":"C#5","time":30.375,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":67,"name":"G4","time":30.5625,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":65,"name":"F4","time":30.75,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":74,"name":"D5","time":30.75,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":69,"name":"A4","time":30.9375,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":67,"name":"G4","time":31.125,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":76,"name":"E5","time":31.125,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":70,"name":"A#4","time":31.3125,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":69,"name":"A4","time":31.5,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":77,"name":"F5","time":31.5,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":67,"name":"G4","time":31.6875,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":65,"name":"F4","time":31.875,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":69,"name":"A4","time":31.875,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":64,"name":"E4","time":32.0625,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":62,"name":"D4","time":32.25,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":71,"name":"B4","time":32.25,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":65,"name":"F4","time":32.4375,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":64,"name":"E4","time":32.625,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":73,"name":"C#5","time":32.625,"duration":0.375,"velocity":1,"track":"one","measure":11},{"midi":67,"name":"G4","time":32.8125,"duration":0.1875,"velocity":1,"track":"two","measure":11},{"midi":65,"name":"F4","time":33,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":74,"name":"D5","time":33,"duration":0.375,"velocity":1,"track":"one","measure":12},{"midi":64,"name":"E4","time":33.1875,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":62,"name":"D4","time":33.375,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":66,"name":"F#4","time":33.375,"duration":0.375,"velocity":1,"track":"one","measure":12},{"midi":60,"name":"C4","time":33.5625,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":59,"name":"B3","time":33.75,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":68,"name":"G#4","time":33.75,"duration":0.375,"velocity":1,"track":"one","measure":12},{"midi":62,"name":"D4","time":33.9375,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":60,"name":"C4","time":34.125,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":69,"name":"A4","time":34.125,"duration":0.375,"velocity":1,"track":"one","measure":12},{"midi":64,"name":"E4","time":34.3125,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":62,"name":"D4","time":34.5,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":71,"name":"B4","time":34.5,"duration":0.375,"velocity":1,"track":"one","measure":12},{"midi":60,"name":"C4","time":34.6875,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":59,"name":"B3","time":34.875,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":72,"name":"C5","time":34.875,"duration":0.375,"velocity":1,"track":"one","measure":12},{"midi":57,"name":"A3","time":35.0625,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":56,"name":"G#3","time":35.25,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":74,"name":"D5","time":35.25,"duration":0.9375,"velocity":1,"track":"one","measure":12},{"midi":59,"name":"B3","time":35.4375,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":57,"name":"A3","time":35.625,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":60,"name":"C4","time":35.8125,"duration":0.1875,"velocity":1,"track":"two","measure":12},{"midi":59,"name":"B3","time":36,"duration":0.375,"velocity":1,"track":"two","measure":13},{"midi":64,"name":"E4","time":36.1875,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":52,"name":"E3","time":36.375,"duration":0.375,"velocity":1,"track":"two","measure":13},{"midi":66,"name":"F#4","time":36.375,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":68,"name":"G#4","time":36.5625,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":62,"name":"D4","time":36.75,"duration":0.5625,"velocity":1,"track":"two","measure":13},{"midi":69,"name":"A4","time":36.75,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":66,"name":"F#4","time":36.9375,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":68,"name":"G#4","time":37.125,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":64,"name":"E4","time":37.3125,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":64,"name":"E4","time":37.3125,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":60,"name":"C4","time":37.5,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":76,"name":"E5","time":37.5,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":59,"name":"B3","time":37.6875,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":74,"name":"D5","time":37.6875,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":57,"name":"A3","time":37.875,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":72,"name":"C5","time":37.875,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":55,"name":"G3","time":38.0625,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":76,"name":"E5","time":38.0625,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":54,"name":"F#3","time":38.25,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":74,"name":"D5","time":38.25,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":57,"name":"A3","time":38.4375,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":72,"name":"C5","time":38.4375,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":56,"name":"G#3","time":38.625,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":71,"name":"B4","time":38.625,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":59,"name":"B3","time":38.8125,"duration":0.1875,"velocity":1,"track":"two","measure":13},{"midi":74,"name":"D5","time":38.8125,"duration":0.1875,"velocity":1,"track":"one","measure":13},{"midi":57,"name":"A3","time":39,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":72,"name":"C5","time":39,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":60,"name":"C4","time":39.1875,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":81,"name":"A5","time":39.1875,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":59,"name":"B3","time":39.375,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":80,"name":"G#5","time":39.375,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":62,"name":"D4","time":39.5625,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":83,"name":"B5","time":39.5625,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":60,"name":"C4","time":39.75,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":81,"name":"A5","time":39.75,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":64,"name":"E4","time":39.9375,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":76,"name":"E5","time":39.9375,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":62,"name":"D4","time":40.125,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":77,"name":"F5","time":40.125,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":65,"name":"F4","time":40.3125,"duration":0.1875,"velocity":1,"track":"two","measure":14},{"midi":74,"name":"D5","time":40.3125,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":64,"name":"E4","time":40.5,"duration":0.375,"velocity":1,"track":"two","measure":14},{"midi":68,"name":"G#4","time":40.5,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":77,"name":"F5","time":40.6875,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":57,"name":"A3","time":40.875,"duration":0.375,"velocity":1,"track":"two","measure":14},{"midi":76,"name":"E5","time":40.875,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":74,"name":"D5","time":41.0625,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":64,"name":"E4","time":41.25,"duration":0.375,"velocity":1,"track":"two","measure":14},{"midi":72,"name":"C5","time":41.25,"duration":0.375,"velocity":1,"track":"one","measure":14},{"midi":52,"name":"E3","time":41.625,"duration":0.375,"velocity":1,"track":"two","measure":14},{"midi":71,"name":"B4","time":41.625,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":69,"name":"A4","time":41.8125,"duration":0.1875,"velocity":1,"track":"one","measure":14},{"midi":57,"name":"A3","time":42,"duration":0.375,"velocity":1,"track":"two","measure":15},{"midi":69,"name":"A4","time":42,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":81,"name":"A5","time":42.1875,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":45,"name":"A2","time":42.375,"duration":0.375,"velocity":1,"track":"two","measure":15},{"midi":79,"name":"G5","time":42.375,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":77,"name":"F5","time":42.5625,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":76,"name":"E5","time":42.75,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":79,"name":"G5","time":42.9375,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":77,"name":"F5","time":43.125,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":81,"name":"A5","time":43.3125,"duration":0.1875,"velocity":1,"track":"one","measure":15},{"midi":79,"name":"G5","time":43.5,"duration":1.6875,"velocity":1,"track":"one","measure":15},{"midi":64,"name":"E4","time":43.6875,"duration":0.1875,"velocity":1,"track":"two","measure":15},{"midi":62,"name":"D4","time":43.875,"duration":0.1875,"velocity":1,"track":"two","measure":15},{"midi":60,"name":"C4","time":44.0625,"duration":0.1875,"velocity":1,"track":"two","measure":15},{"midi":59,"name":"B3","time":44.25,"duration":0.1875,"velocity":1,"track":"two","measure":15},{"midi":62,"name":"D4","time":44.4375,"duration":0.1875,"velocity":1,"track":"two","measure":15},{"midi":61,"name":"C#4","time":44.625,"duration":0.1875,"velocity":1,"track":"two","measure":15},{"midi":64,"name":"E4","time":44.8125,"duration":0.1875,"velocity":1,"track":"two","measure":15},{"midi":62,"name":"D4","time":45,"duration":1.6875,"velocity":1,"track":"two","measure":16},{"midi":76,"name":"E5","time":45.1875,"duration":0.1875,"velocity":1,"track":"one","measure":16},{"midi":77,"name":"F5","time":45.375,"duration":0.1875,"velocity":1,"track":"one","measure":16},{"midi":79,"name":"G5","time":45.5625,"duration":0.1875,"velocity":1,"track":"one","measure":16},{"midi":81,"name":"A5","time":45.75,"duration":0.1875,"velocity":1,"track":"one","measure":16},{"midi":77,"name":"F5","time":45.9375,"duration":0.1875,"velocity":1,"track":"one","measure":16},{"midi":79,"name":"G5","time":46.125,"duration":0.1875,"velocity":1,"track":"one","measure":16},{"midi":76,"name":"E5","time":46.3125,"duration":0.1875,"velocity":1,"track":"one","measure":16},{"midi":77,"name":"F5","time":46.5,"duration":1.6875,"velocity":1,"track":"one","measure":16},{"midi":57,"name":"A3","time":46.6875,"duration":0.1875,"velocity":1,"track":"two","measure":16},{"midi":59,"name":"B3","time":46.875,"duration":0.1875,"velocity":1,"track":"two","measure":16},{"midi":60,"name":"C4","time":47.0625,"duration":0.1875,"velocity":1,"track":"two","measure":16},{"midi":62,"name":"D4","time":47.25,"duration":0.1875,"velocity":1,"track":"two","measure":16},{"midi":59,"name":"B3","time":47.4375,"duration":0.1875,"velocity":1,"track":"two","measure":16},{"midi":60,"name":"C4","time":47.625,"duration":0.1875,"velocity":1,"track":"two","measure":16},{"midi":57,"name":"A3","time":47.8125,"duration":0.1875,"velocity":1,"track":"two","measure":16},{"midi":59,"name":"B3","time":48,"duration":1.6875,"velocity":1,"track":"two","measure":17},{"midi":79,"name":"G5","time":48.1875,"duration":0.1875,"velocity":1,"track":"one","measure":17},{"midi":77,"name":"F5","time":48.375,"duration":0.1875,"velocity":1,"track":"one","measure":17},{"midi":76,"name":"E5","time":48.5625,"duration":0.1875,"velocity":1,"track":"one","measure":17},{"midi":74,"name":"D5","time":48.75,"duration":0.1875,"velocity":1,"track":"one","measure":17},{"midi":77,"name":"F5","time":48.9375,"duration":0.1875,"velocity":1,"track":"one","measure":17},{"midi":76,"name":"E5","time":49.125,"duration":0.1875,"velocity":1,"track":"one","measure":17},{"midi":79,"name":"G5","time":49.3125,"duration":0.1875,"velocity":1,"track":"one","measure":17},{"midi":77,"name":"F5","time":49.5,"duration":1.6875,"velocity":1,"track":"one","measure":17},{"midi":62,"name":"D4","time":49.6875,"duration":0.1875,"velocity":1,"track":"two","measure":17},{"midi":60,"name":"C4","time":49.875,"duration":0.1875,"velocity":1,"track":"two","measure":17},{"midi":59,"name":"B3","time":50.0625,"duration":0.1875,"velocity":1,"track":"two","measure":17},{"midi":57,"name":"A3","time":50.25,"duration":0.1875,"velocity":1,"track":"two","measure":17},{"midi":60,"name":"C4","time":50.4375,"duration":0.1875,"velocity":1,"track":"two","measure":17},{"midi":59,"name":"B3","time":50.625,"duration":0.1875,"velocity":1,"track":"two","measure":17},{"midi":62,"name":"D4","time":50.8125,"duration":0.1875,"velocity":1,"track":"two","measure":17},{"midi":60,"name":"C4","time":51,"duration":1.6875,"velocity":1,"track":"two","measure":18},{"midi":74,"name":"D5","time":51.1875,"duration":0.1875,"velocity":1,"track":"one","measure":18},{"midi":76,"name":"E5","time":51.375,"duration":0.1875,"velocity":1,"track":"one","measure":18},{"midi":77,"name":"F5","time":51.5625,"duration":0.1875,"velocity":1,"track":"one","measure":18},{"midi":79,"name":"G5","time":51.75,"duration":0.1875,"velocity":1,"track":"one","measure":18},{"midi":76,"name":"E5","time":51.9375,"duration":0.1875,"velocity":1,"track":"one","measure":18},{"midi":77,"name":"F5","time":52.125,"duration":0.1875,"velocity":1,"track":"one","measure":18},{"midi":74,"name":"D5","time":52.3125,"duration":0.1875,"velocity":1,"track":"one","measure":18},{"midi":76,"name":"E5","time":52.5,"duration":1.6875,"velocity":1,"track":"one","measure":18},{"midi":55,"name":"G3","time":52.6875,"duration":0.1875,"velocity":1,"track":"two","measure":18},{"midi":57,"name":"A3","time":52.875,"duration":0.1875,"velocity":1,"track":"two","measure":18},{"midi":58,"name":"A#3","time":53.0625,"duration":0.1875,"velocity":1,"track":"two","measure":18},{"midi":60,"name":"C4","time":53.25,"duration":0.1875,"velocity":1,"track":"two","measure":18},{"midi":57,"name":"A3","time":53.4375,"duration":0.1875,"velocity":1,"track":"two","measure":18},{"midi":58,"name":"A#3","time":53.625,"duration":0.1875,"velocity":1,"track":"two","measure":18},{"midi":55,"name":"G3","time":53.8125,"duration":0.1875,"velocity":1,"track":"two","measure":18},{"midi":57,"name":"A3","time":54,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":72,"name":"C5","time":54.1875,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":58,"name":"A#3","time":54.375,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":74,"name":"D5","time":54.375,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":76,"name":"E5","time":54.5625,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":57,"name":"A3","time":54.75,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":77,"name":"F5","time":54.75,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":74,"name":"D5","time":54.9375,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":55,"name":"G3","time":55.125,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":76,"name":"E5","time":55.125,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":72,"name":"C5","time":55.3125,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":53,"name":"F3","time":55.5,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":74,"name":"D5","time":55.5,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":76,"name":"E5","time":55.6875,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":62,"name":"D4","time":55.875,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":77,"name":"F5","time":55.875,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":79,"name":"G5","time":56.0625,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":60,"name":"C4","time":56.25,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":81,"name":"A5","time":56.25,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":77,"name":"F5","time":56.4375,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":58,"name":"A#3","time":56.625,"duration":0.375,"velocity":1,"track":"two","measure":19},{"midi":79,"name":"G5","time":56.625,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":76,"name":"E5","time":56.8125,"duration":0.1875,"velocity":1,"track":"one","measure":19},{"midi":57,"name":"A3","time":57,"duration":0.375,"velocity":1,"track":"two","measure":20},{"midi":77,"name":"F5","time":57,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":79,"name":"G5","time":57.1875,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":65,"name":"F4","time":57.375,"duration":0.375,"velocity":1,"track":"two","measure":20},{"midi":81,"name":"A5","time":57.375,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":83,"name":"B5","time":57.5625,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":64,"name":"E4","time":57.75,"duration":0.375,"velocity":1,"track":"two","measure":20},{"midi":84,"name":"C6","time":57.75,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":81,"name":"A5","time":57.9375,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":62,"name":"D4","time":58.125,"duration":0.375,"velocity":1,"track":"two","measure":20},{"midi":83,"name":"B5","time":58.125,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":79,"name":"G5","time":58.3125,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":64,"name":"E4","time":58.5,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":84,"name":"C6","time":58.5,"duration":0.375,"velocity":1,"track":"one","measure":20},{"midi":50,"name":"D3","time":58.6875,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":52,"name":"E3","time":58.875,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":79,"name":"G5","time":58.875,"duration":0.375,"velocity":1,"track":"one","measure":20},{"midi":53,"name":"F3","time":59.0625,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":55,"name":"G3","time":59.25,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":76,"name":"E5","time":59.25,"duration":0.375,"velocity":1,"track":"one","measure":20},{"midi":52,"name":"E3","time":59.4375,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":53,"name":"F3","time":59.625,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":74,"name":"D5","time":59.625,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":50,"name":"D3","time":59.8125,"duration":0.1875,"velocity":1,"track":"two","measure":20},{"midi":72,"name":"C5","time":59.8125,"duration":0.1875,"velocity":1,"track":"one","measure":20},{"midi":52,"name":"E3","time":60,"duration":0.375,"velocity":1,"track":"two","measure":21},{"midi":72,"name":"C5","time":60,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":70,"name":"A#4","time":60.1875,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":48,"name":"C3","time":60.375,"duration":0.375,"velocity":1,"track":"two","measure":21},{"midi":69,"name":"A4","time":60.375,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":67,"name":"G4","time":60.5625,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":50,"name":"D3","time":60.75,"duration":0.375,"velocity":1,"track":"two","measure":21},{"midi":65,"name":"F4","time":60.75,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":69,"name":"A4","time":60.9375,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":52,"name":"E3","time":61.125,"duration":0.375,"velocity":1,"track":"two","measure":21},{"midi":67,"name":"G4","time":61.125,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":70,"name":"A#4","time":61.3125,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":53,"name":"F3","time":61.5,"duration":0.1875,"velocity":1,"track":"two","measure":21},{"midi":69,"name":"A4","time":61.5,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":50,"name":"D3","time":61.6875,"duration":0.1875,"velocity":1,"track":"two","measure":21},{"midi":71,"name":"B4","time":61.6875,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":52,"name":"E3","time":61.875,"duration":0.1875,"velocity":1,"track":"two","measure":21},{"midi":72,"name":"C5","time":61.875,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":53,"name":"F3","time":62.0625,"duration":0.1875,"velocity":1,"track":"two","measure":21},{"midi":64,"name":"E4","time":62.0625,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":55,"name":"G3","time":62.25,"duration":0.375,"velocity":1,"track":"two","measure":21},{"midi":62,"name":"D4","time":62.25,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":72,"name":"C5","time":62.4375,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":43,"name":"G2","time":62.625,"duration":0.375,"velocity":1,"track":"two","measure":21},{"midi":65,"name":"F4","time":62.625,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":71,"name":"B4","time":62.8125,"duration":0.1875,"velocity":1,"track":"one","measure":21},{"midi":36,"name":"C2","time":63,"duration":3,"velocity":1,"track":"two","measure":22},{"midi":48,"name":"C3","time":63,"duration":3,"velocity":1,"track":"two","measure":22},{"midi":64,"name":"E4","time":63,"duration":3,"velocity":1,"track":"one","measure":22},{"midi":67,"name":"G4","time":63,"duration":3,"velocity":1,"track":"one","measure":22},{"midi":72,"name":"C5","time":63,"duration":3,"velocity":1,"track":"one","measure":22}],"measures":22,"durationSeconds":66,"tempoBpm":80,"range":"C2-C6"};
+    const notes = PRACTICE.notes;
+    const audioState = {
+      context: null,
+      startedAt: 0,
+      offset: 0,
+      playing: false,
+      scheduled: [],
+      raf: 0
+    };
+
+    const playButton = document.getElementById("play");
+    const pauseButton = document.getElementById("pause");
+    const stopButton = document.getElementById("stop");
+    const tempo = document.getElementById("tempo");
+    const tempoValue = document.getElementById("tempoValue");
+    const bar = document.getElementById("bar");
+    const clock = document.getElementById("clock");
+    const measure = document.getElementById("measure");
+    const currentNote = document.getElementById("currentNote");
+    const noteLane = document.getElementById("noteLane");
+
+    tempo.addEventListener("input", () => {
+      tempoValue.textContent = tempo.value;
+      if (audioState.playing) {
+        const position = getPosition();
+        stopAudio(false);
+        audioState.offset = position;
+        startAudio();
+      }
+    });
+    playButton.addEventListener("click", startAudio);
+    pauseButton.addEventListener("click", () => {
+      audioState.offset = getPosition();
+      stopAudio(false);
+    });
+    stopButton.addEventListener("click", () => stopAudio(true));
+
+    renderNoteLane();
+    updateUi(0);
+
+    async function startAudio() {
+      if (audioState.playing) return;
+      if (!audioState.context) {
+        audioState.context = new AudioContext();
+      }
+      if (audioState.context.state === "suspended") {
+        await audioState.context.resume();
+      }
+
+      const speed = Number(tempo.value) / 100;
+      const context = audioState.context;
+      const now = context.currentTime + 0.06;
+      audioState.startedAt = context.currentTime - audioState.offset / speed;
+      audioState.playing = true;
+
+      for (const note of notes) {
+        if (note.time + note.duration < audioState.offset) continue;
+        const start = now + Math.max(0, (note.time - audioState.offset) / speed);
+        const duration = Math.max(0.05, note.duration / speed);
+        audioState.scheduled.push(playNote(context, note, start, duration));
+      }
+
+      tick();
+    }
+
+    function playNote(context, note, start, duration) {
+      const frequency = 440 * Math.pow(2, (note.midi - 69) / 12);
+      const gain = context.createGain();
+      const osc = context.createOscillator();
+      const overtone = context.createOscillator();
+      const filter = context.createBiquadFilter();
+      const peak = Math.min(0.22, 0.08 + note.velocity * 0.16);
+
+      osc.type = "triangle";
+      overtone.type = "sine";
+      osc.frequency.value = frequency;
+      overtone.frequency.value = frequency * 2;
+      filter.type = "lowpass";
+      filter.frequency.value = 1800;
+      filter.Q.value = 0.8;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(peak, start + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+      osc.connect(filter);
+      overtone.connect(filter);
+      filter.connect(gain);
+      gain.connect(context.destination);
+      osc.start(start);
+      overtone.start(start);
+      osc.stop(start + duration + 0.08);
+      overtone.stop(start + duration + 0.08);
+      return [osc, overtone, gain];
+    }
+
+    function stopAudio(reset) {
+      for (const scheduled of audioState.scheduled) {
+        for (const node of scheduled) {
+          try {
+            if (typeof node.stop === "function") node.stop(0);
+            node.disconnect();
+          } catch {}
+        }
+      }
+      audioState.scheduled = [];
+      audioState.playing = false;
+      cancelAnimationFrame(audioState.raf);
+      if (reset) {
+        audioState.offset = 0;
+        updateUi(0);
+      }
+    }
+
+    function getPosition() {
+      if (!audioState.playing || !audioState.context) return audioState.offset;
+      return Math.min(PRACTICE.durationSeconds, (audioState.context.currentTime - audioState.startedAt) * (Number(tempo.value) / 100));
+    }
+
+    function tick() {
+      const position = getPosition();
+      updateUi(position);
+      if (position >= PRACTICE.durationSeconds) {
+        stopAudio(true);
+        return;
+      }
+      audioState.raf = requestAnimationFrame(tick);
+    }
+
+    function updateUi(position) {
+      const percent = PRACTICE.durationSeconds > 0 ? Math.min(100, (position / PRACTICE.durationSeconds) * 100) : 0;
+      const active = findActiveNote(position);
+      bar.style.width = percent.toFixed(2) + "%";
+      clock.textContent = formatTime(position);
+      measure.textContent = (active?.measure ?? 1) + "/" + PRACTICE.measures;
+      currentNote.textContent = active ? active.name + " | " + active.track : "Ready";
+      for (const row of noteLane.querySelectorAll(".note-row")) {
+        row.classList.toggle("active", Number(row.dataset.index) === active?.index);
+      }
+    }
+
+    function findActiveNote(position) {
+      let best = null;
+      for (let index = 0; index < notes.length; index += 1) {
+        const note = notes[index];
+        if (note.time <= position && note.time + Math.max(0.08, note.duration) >= position) {
+          best = { ...note, index };
+          break;
+        }
+        if (note.time > position) break;
+      }
+      return best;
+    }
+
+    function renderNoteLane() {
+      const sample = notes.filter((_, index) => index % Math.max(1, Math.floor(notes.length / 80)) === 0).slice(0, 80);
+      noteLane.innerHTML = sample.map((note) => {
+        const index = notes.indexOf(note);
+        return '<div class="note-row" data-index="' + index + '"><strong>' + note.name + '</strong><span>' + escapeText(note.track) + '</span><span>M' + note.measure + '</span></div>';
+      }).join("");
+    }
+
+    function formatTime(seconds) {
+      const whole = Math.max(0, Math.floor(seconds));
+      return Math.floor(whole / 60) + ":" + String(whole % 60).padStart(2, "0");
+    }
+
+    function escapeText(text) {
+      return String(text).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "title": "Bach Invention 1 Practice",
+  "composer": "J. S. Bach",
+  "slug": "bach-invention-1-practice",
+  "createdAt": "2026-06-15T05:51:12.683Z",
+  "updatedAt": "2026-06-15T06:23:49.201Z",
+  "notes": "Public/open-license Mutopia MIDI handoff for GarageBand piano practice.",
+  "contentPolicy": {
+    "accepts": [
+      "User-supplied MIDI files that the user is authorized to use.",
+      "User-supplied MusicXML files that the user is authorized to use.",
+      "Public-domain or open-license catalogue results whose license is visible."
+    ],
+    "searches": [
+      "Search only public-domain/open-license catalogues.",
+      "Mutopia Project is the first supported source because it publishes PDF, MIDI, and LilyPond files under public-domain or Creative Commons terms."
+    ],
+    "rejects": [
+      "Do not search for or download copyrighted MIDI from unauthorized sources.",
+      "Do not represent generated practice material as a transcription of a copyrighted recording."
+    ],
+    "later": [
+      "AI approximation may be added later only from user-provided chords/structure and must be labeled as an arrangement, not a transcription.",
+      "Live KeyLab feedback belongs in a later browser/Web MIDI practice surface, not in the GarageBand handoff."
+    ]
+  },
+  "paths": {
+    "source": "source/",
+    "midi": "midi/",
+    "charts": "charts/",
+    "practice": "practice/",
+    "garagebandNotes": "garageband/README.md",
+    "projectJson": "project.json"
+  },
+  "sources": [
+    {
+      "kind": "mutopia_open_license",
+      "path": "source/bach-invention-01.mid",
+      "url": "https://www.mutopiaproject.org/ftp/BachJS/BWV772/bach-invention-01/bach-invention-01.mid",
+      "provider": "Mutopia Project",
+      "title": "Invention 1",
+      "license": "Creative Commons Attribution-ShareAlike 3.0",
+      "importedAt": "2026-06-15T05:51:14.591Z"
+    }
+  ],
+  "midiFiles": [
+    {
+      "path": "midi/bach-invention-1-practice.mid",
+      "role": "garageband-handoff",
+      "analysis": {
+        "filePath": "midi/bach-invention-1-practice.mid",
+        "fileName": "bach-invention-1-practice.mid",
+        "ppq": 384,
+        "durationSeconds": 66,
+        "totalTicks": 33792,
+        "tempos": [
+          {
+            "ticks": 0,
+            "bpm": 80
+          }
+        ],
+        "timeSignatures": [
+          {
+            "ticks": 0,
+            "numerator": 4,
+            "denominator": 4
+          }
+        ],
+        "measures": 22,
+        "tracks": [
+          {
+            "index": 0,
+            "name": "one",
+            "channel": 1,
+            "instrument": {
+              "number": 0,
+              "name": "acoustic grand piano",
+              "family": "piano"
+            },
+            "noteCount": 240,
+            "range": {
+              "min": 60,
+              "max": 84,
+              "minName": "C4",
+              "maxName": "C6"
+            }
+          },
+          {
+            "index": 1,
+            "name": "two",
+            "channel": 2,
+            "instrument": {
+              "number": 0,
+              "name": "acoustic grand piano",
+              "family": "piano"
+            },
+            "noteCount": 218,
+            "range": {
+              "min": 36,
+              "max": 70,
+              "minName": "C2",
+              "maxName": "A#4"
+            }
+          }
+        ],
+        "overallRange": {
+          "min": 36,
+          "max": 84,
+          "minName": "C2",
+          "maxName": "C6"
+        }
+      },
+      "createdAt": "2026-06-15T05:51:14.591Z"
+    }
+  ],
+  "chartFiles": [
+    {
+      "path": "charts/bach-invention-1-grand-staff.musicxml",
+      "format": "musicxml",
+      "sourceMidiPath": "midi/bach-invention-1-practice.mid",
+      "createdAt": "2026-06-15T05:51:14.630Z"
+    },
+    {
+      "path": "charts/bach-invention-1-mutopia-a4.pdf",
+      "format": "pdf",
+      "sourceMidiPath": "midi/bach-invention-1-practice.mid",
+      "createdAt": "2026-06-15T05:51:15.425Z"
+    }
+  ],
+  "activeMidiPath": "midi/bach-invention-1-practice.mid",
+  "practiceFiles": [
+    {
+      "path": "practice/index.html",
+      "format": "html",
+      "sourceMidiPath": "midi/bach-invention-1-practice.mid",
+      "scorePath": "charts/bach-invention-1-mutopia-a4.pdf",
+      "createdAt": "2026-06-15T06:23:49.198Z"
+    }
+  ]
+}
