@@ -1,0 +1,219 @@
+{
+  "projectSlug": "bach-prelude-c-major-bwv-846",
+  "timeSignature": [
+    4,
+    4
+  ],
+  "bars": [
+    {
+      "number": 1,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-01.mid",
+      "startTick": 0,
+      "endTick": 1536
+    },
+    {
+      "number": 2,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-02.mid",
+      "startTick": 1536,
+      "endTick": 3072
+    },
+    {
+      "number": 3,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-03.mid",
+      "startTick": 3072,
+      "endTick": 4608
+    },
+    {
+      "number": 4,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-04.mid",
+      "startTick": 4608,
+      "endTick": 6144
+    },
+    {
+      "number": 5,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-05.mid",
+      "startTick": 6144,
+      "endTick": 7680
+    },
+    {
+      "number": 6,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-06.mid",
+      "startTick": 7680,
+      "endTick": 9216
+    },
+    {
+      "number": 7,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-07.mid",
+      "startTick": 9216,
+      "endTick": 10752
+    },
+    {
+      "number": 8,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-08.mid",
+      "startTick": 10752,
+      "endTick": 12288
+    },
+    {
+      "number": 9,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-09.mid",
+      "startTick": 12288,
+      "endTick": 13824
+    },
+    {
+      "number": 10,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-10.mid",
+      "startTick": 13824,
+      "endTick": 15360
+    },
+    {
+      "number": 11,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-11.mid",
+      "startTick": 15360,
+      "endTick": 16896
+    },
+    {
+      "number": 12,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-12.mid",
+      "startTick": 16896,
+      "endTick": 18432
+    },
+    {
+      "number": 13,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-13.mid",
+      "startTick": 18432,
+      "endTick": 19968
+    },
+    {
+      "number": 14,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-14.mid",
+      "startTick": 19968,
+      "endTick": 21504
+    },
+    {
+      "number": 15,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-15.mid",
+      "startTick": 21504,
+      "endTick": 23040
+    },
+    {
+      "number": 16,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-16.mid",
+      "startTick": 23040,
+      "endTick": 24576
+    },
+    {
+      "number": 17,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-17.mid",
+      "startTick": 24576,
+      "endTick": 26112
+    },
+    {
+      "number": 18,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-18.mid",
+      "startTick": 26112,
+      "endTick": 27648
+    },
+    {
+      "number": 19,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-19.mid",
+      "startTick": 27648,
+      "endTick": 29184
+    },
+    {
+      "number": 20,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-20.mid",
+      "startTick": 29184,
+      "endTick": 30720
+    },
+    {
+      "number": 21,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-21.mid",
+      "startTick": 30720,
+      "endTick": 32256
+    },
+    {
+      "number": 22,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-22.mid",
+      "startTick": 32256,
+      "endTick": 33792
+    },
+    {
+      "number": 23,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-23.mid",
+      "startTick": 33792,
+      "endTick": 35328
+    },
+    {
+      "number": 24,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-24.mid",
+      "startTick": 35328,
+      "endTick": 36864
+    },
+    {
+      "number": 25,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-25.mid",
+      "startTick": 36864,
+      "endTick": 38400
+    },
+    {
+      "number": 26,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-26.mid",
+      "startTick": 38400,
+      "endTick": 39936
+    },
+    {
+      "number": 27,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-27.mid",
+      "startTick": 39936,
+      "endTick": 41472
+    },
+    {
+      "number": 28,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-28.mid",
+      "startTick": 41472,
+      "endTick": 43008
+    },
+    {
+      "number": 29,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-29.mid",
+      "startTick": 43008,
+      "endTick": 44544
+    },
+    {
+      "number": 30,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-30.mid",
+      "startTick": 44544,
+      "endTick": 46080
+    },
+    {
+      "number": 31,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-31.mid",
+      "startTick": 46080,
+      "endTick": 47616
+    },
+    {
+      "number": 32,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-32.mid",
+      "startTick": 47616,
+      "endTick": 49152
+    },
+    {
+      "number": 33,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-33.mid",
+      "startTick": 49152,
+      "endTick": 50688
+    },
+    {
+      "number": 34,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-34.mid",
+      "startTick": 50688,
+      "endTick": 52224
+    },
+    {
+      "number": 35,
+      "midiPath": "/Users/isaaccavallaro/Development/personal/garageband-practice-mcp/songs/bach-prelude-c-major-bwv-846/midi/bars/bach-prelude-c-major-bwv-846-bar-35.mid",
+      "startTick": 52224,
+      "endTick": 53760
+    }
+  ]
+}

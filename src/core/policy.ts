@@ -15,8 +15,7 @@ export const contentPolicy: ContentPolicySnapshot = {
     "Do not represent generated practice material as a transcription of a copyrighted recording."
   ],
   later: [
-    "AI approximation may be added later only from user-provided chords/structure and must be labeled as an arrangement, not a transcription.",
-    "Live KeyLab feedback belongs in a later browser/Web MIDI practice surface, not in the GarageBand handoff."
+    "AI approximation may be added later only from user-provided chords/structure and must be labeled as an arrangement, not a transcription."
   ]
 };
 

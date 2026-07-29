@@ -8,7 +8,6 @@ import midiPackage from "@tonejs/midi";
 
 import { createPracticeProject, importUserMidi } from "../src/core/project.js";
 import { generatePianoGrandStaffChart, midiToGrandStaffMusicXml } from "../src/core/musicxml.js";
-import { generateBrowserPracticeView } from "../src/core/practice-view.js";
 
 const { Midi } = midiPackage;
 
@@ -53,26 +52,4 @@ test("generatePianoGrandStaffChart writes MusicXML and can skip renderer export"
   const projectJson = JSON.parse(await readFile(join(process.env.GARAGEBAND_PRACTICE_ROOT, project.slug, "project.json"), "utf8"));
   assert.equal(projectJson.chartFiles[0].path, "charts/chart-study-grand-staff.musicxml");
   assert.equal(projectJson.chartFiles[0].sourceMidiPath, "midi/chart-study.mid");
-});
-
-test("generateBrowserPracticeView writes a self-contained HTML playalong view", async () => {
-  process.env.GARAGEBAND_PRACTICE_ROOT = await mkdtemp(join(tmpdir(), "garageband-practice-"));
-  const project = await createPracticeProject({ title: "Browser View Study" });
-  const midiPath = join(process.env.GARAGEBAND_PRACTICE_ROOT, "browser-source.mid");
-  const midi = new Midi();
-  midi.addTrack().addNote({ midi: 60, time: 0, duration: 1 });
-  await writeFile(midiPath, Buffer.from(midi.toArray()));
-  await importUserMidi({ projectSlug: project.slug, midiFilePath: midiPath });
-
-  const result = await generateBrowserPracticeView({ projectSlug: project.slug });
-  const html = await readFile(result.htmlPath, "utf8");
-
-  assert.equal(result.noteCount, 1);
-  assert.match(html, /Browser View Study/);
-  assert.match(html, /AudioContext/);
-  assert.match(html, /browser-view-study\.mid/);
-
-  const projectJson = JSON.parse(await readFile(join(process.env.GARAGEBAND_PRACTICE_ROOT, project.slug, "project.json"), "utf8"));
-  assert.equal(projectJson.practiceFiles[0].path, "practice/index.html");
-  assert.equal(projectJson.practiceFiles[0].sourceMidiPath, "midi/browser-view-study.mid");
 });

@@ -1,10 +1,10 @@
 import { constants } from "node:fs";
 import { access, copyFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
-import { basename, extname, isAbsolute, join, resolve } from "node:path";
+import { basename, extname, isAbsolute, join, relative, resolve } from "node:path";
 
 import { assertAllowedMutopiaMidiUrl, contentPolicy } from "./policy.js";
 import { projectDir, projectJsonPath, projectSubdir, resolveProjectPath, toProjectRelativePath } from "./paths.js";
-import { analyzeMidiFile, readMidiFile, writeGarageBandPlayalongMidiFile } from "./midi.js";
+import { analyzeMidiFile, readMidiFile, sliceMidiByMeasure, writeGarageBandPlayalongMidiFile } from "./midi.js";
 import { assertValidSlug, safeFileStem, slugify } from "./slug.js";
 import type { MidiAnalysis, PracticeProject, ProjectMidiFile, ProjectSource } from "./types.js";
 
@@ -29,6 +29,41 @@ export interface ImportPublicDomainMidiInput {
   license?: string;
   provider?: string;
   sourcePageUrl?: string;
+}
+
+export interface GenerateBarPracticeAssetsInput {
+  projectSlug: string;
+  midiFilePath?: string;
+}
+
+export async function generateBarPracticeAssets(input: GenerateBarPracticeAssetsInput): Promise<{
+  directory: string;
+  bars: Array<{ number: number; midiPath: string; startTick: number; endTick: number }>;
+  loopInstructions: string;
+}> {
+  const project = await loadProject(input.projectSlug);
+  const midiPath = await getActiveMidiPath(project.slug, input.midiFilePath);
+  const source = await readMidiFile(midiPath);
+  const signature = source.header.timeSignatures[0]?.timeSignature ?? [4, 4];
+  const measureTicks = Math.max(1, Math.round(source.header.ppq * 4 * (signature[0] / signature[1])));
+  const directory = join(projectSubdir(project.slug, "midi"), "bars");
+  const slices = sliceMidiByMeasure(source);
+  await mkdir(directory, { recursive: true });
+
+  const bars = await Promise.all(slices.map(async (slice, index) => {
+    const number = index + 1;
+    const midiPath = join(directory, `${safeFileStem(project.slug)}-bar-${String(number).padStart(2, "0")}.mid`);
+    await writeGarageBandPlayalongMidiFile(slice, midiPath, `${project.title} – Bar ${String(number).padStart(2, "0")}`);
+    return { number, midiPath, startTick: index * measureTicks, endTick: (index + 1) * measureTicks };
+  }));
+
+  const manifestPath = join(directory, "practice-bars.json");
+  await writeFile(manifestPath, `${JSON.stringify({ projectSlug: project.slug, timeSignature: signature, bars }, null, 2)}\n`, "utf8");
+  return {
+    directory,
+    bars,
+    loopInstructions: "Each file contains exactly one bar of backing piano plus an empty play-along track. Import a selected bar into GarageBand and enable Cycle for that one-bar region."
+  };
 }
 
 export async function createPracticeProject(input: CreatePracticeProjectInput): Promise<PracticeProject> {
@@ -222,13 +257,17 @@ export async function getActiveMidiPath(projectSlug: string, midiFilePath?: stri
 async function writeGarageBandReadme(project: PracticeProject): Promise<void> {
   const text = `# ${project.title} GarageBand Handoff
 
-This folder is for GarageBand handoff notes and manually saved .band project references.
+This folder contains the native GarageBand practice session. The saved .band project is the primary practice artifact; it should show notation in GarageBand's Score Editor while playback runs.
 
-V1 flow:
-1. Import or generate an authorized MIDI file into ../midi/.
-2. Generate MusicXML and optional PDF/PNG practice charts into ../charts/.
-3. Run open_in_garageband to open the MIDI in GarageBand.
-4. Save the .band project manually from GarageBand if desired.
+One-time setup:
+1. Run open_in_garageband to import the active MIDI as tracks.
+2. Select the '<song title> - MIDI' software-instrument track, double-click its MIDI region, then choose Score in the editor.
+3. Play from GarageBand's transport and use your MIDI keyboard through the selected notation track.
+4. Save the project here as ${project.slug}.band.
+
+Later sessions:
+1. Run open_in_garageband without midiFilePath.
+2. The saved .band project in this folder is opened before any MIDI handoff.
 
 Content policy:
 - User-supplied MIDI/MusicXML files are accepted when you are authorized to use them.

@@ -35,6 +35,47 @@ export async function writeMidiFile(midi: MidiType, filePath: string): Promise<v
   await writeFile(filePath, Buffer.from(midi.toArray()));
 }
 
+export function sliceMidiByMeasure(source: MidiType): MidiType[] {
+  const signature = source.header.timeSignatures[0]?.timeSignature ?? [4, 4];
+  const measureTicks = Math.max(1, Math.round(source.header.ppq * 4 * (signature[0] / signature[1])));
+  const totalTicks = Math.max(
+    1,
+    ...source.tracks.flatMap((track) => track.notes.map((note) => Math.ceil(note.ticks + note.durationTicks)))
+  );
+  const measureCount = Math.max(1, Math.ceil(totalTicks / measureTicks));
+
+  return Array.from({ length: measureCount }, (_, measureIndex) => {
+    const startTick = measureIndex * measureTicks;
+    const endTick = Math.min(totalTicks, startTick + measureTicks);
+    const slice = new Midi();
+    slice.header.fromJSON(source.header.toJSON());
+    slice.header.name = `${source.header.name || "Practice"} – Bar ${String(measureIndex + 1).padStart(2, "0")}`;
+
+    for (const sourceTrack of source.tracks) {
+      const track = slice.addTrack();
+      track.name = sourceTrack.name;
+      track.channel = sourceTrack.channel;
+      track.instrument.number = sourceTrack.instrument.number;
+
+      for (const note of sourceTrack.notes) {
+        const noteStart = Math.max(startTick, note.ticks);
+        const noteEnd = Math.min(endTick, note.ticks + note.durationTicks);
+        if (noteEnd <= noteStart) continue;
+
+        track.addNote({
+          midi: note.midi,
+          ticks: noteStart - startTick,
+          durationTicks: Math.max(1, noteEnd - noteStart),
+          velocity: note.velocity,
+          noteOffVelocity: note.noteOffVelocity
+        });
+      }
+    }
+
+    return slice;
+  });
+}
+
 export async function writeGarageBandPlayalongMidiFile(
   source: MidiType,
   filePath: string,

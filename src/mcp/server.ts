@@ -5,12 +5,12 @@ import { z } from "zod";
 import { contentPolicy } from "../core/policy.js";
 import {
   createPracticeProject,
+  generateBarPracticeAssets,
   importPublicDomainMidi,
   importUserMidi
 } from "../core/project.js";
 import { searchPublicDomainMidi } from "../core/mutopia.js";
 import { generatePianoGrandStaffChart } from "../core/musicxml.js";
-import { generateBrowserPracticeView } from "../core/practice-view.js";
 import { diagnoseSetup, openInGarageBand } from "../core/garageband.js";
 import { saveSessionSnapshot } from "../core/session.js";
 
@@ -33,6 +33,19 @@ server.registerTool(
     }
   },
   async (input) => asToolResult(await createPracticeProject(input))
+);
+
+server.registerTool(
+  "generate_bar_practice_assets",
+  {
+    title: "Generate GarageBand-ready one-bar practice MIDI files",
+    description: "Split the active MIDI into one named backing/play-along MIDI handoff per bar and write a loop manifest locally.",
+    inputSchema: {
+      projectSlug: z.string().min(1),
+      midiFilePath: z.string().optional()
+    }
+  },
+  async (input) => asToolResult(await generateBarPracticeAssets(input))
 );
 
 server.registerTool(
@@ -102,29 +115,15 @@ server.registerTool(
 server.registerTool(
   "open_in_garageband",
   {
-    title: "Open the project MIDI in GarageBand",
-    description: "Open the active generated/imported MIDI file in GarageBand with open -a GarageBand.",
-    inputSchema: {
-      projectSlug: z.string().min(1),
-      midiFilePath: z.string().optional()
-    }
-  },
-  async (input) => asToolResult(await openInGarageBand(input))
-);
-
-server.registerTool(
-  "generate_browser_practice_view",
-  {
-    title: "Generate a browser notation and playalong view",
-    description: "Create a local HTML practice page that embeds the score PDF/MusicXML link and plays MIDI-derived note events through Web Audio.",
+    title: "Open the native GarageBand practice session",
+    description: "Open a saved .band session from the song's garageband folder when one exists; otherwise open the active MIDI for one-time import and native Score Editor setup.",
     inputSchema: {
       projectSlug: z.string().min(1),
       midiFilePath: z.string().optional(),
-      scorePath: z.string().optional(),
-      outputBasename: z.string().optional()
+      preferSavedProject: z.boolean().optional()
     }
   },
-  async (input) => asToolResult(await generateBrowserPracticeView(input))
+  async (input) => asToolResult(await openInGarageBand(input))
 );
 
 server.registerTool(

@@ -1,35 +1,41 @@
 import { constants } from "node:fs";
-import { access } from "node:fs/promises";
+import { access, readdir, stat } from "node:fs/promises";
+import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
 import { getActiveMidiPath } from "./project.js";
+import { projectSubdir } from "./paths.js";
 
 const garageBandAppPath = "/Applications/GarageBand.app";
 
 export interface OpenInGarageBandInput {
   projectSlug: string;
   midiFilePath?: string;
+  preferSavedProject?: boolean;
 }
 
 export async function openInGarageBand(input: OpenInGarageBandInput): Promise<{
   garageBandInstalled: boolean;
-  midiPath: string;
+  openedPath: string;
+  openedKind: "garageband-project" | "midi-handoff";
   opened: boolean;
   message: string;
+  scoreEditorSetup: string[];
 }> {
-  const midiPath = await getActiveMidiPath(input.projectSlug, input.midiFilePath);
+  const target = await resolveGarageBandOpenTarget(input);
   const garageBandInstalled = await pathExists(garageBandAppPath);
 
   if (!garageBandInstalled) {
     return {
       garageBandInstalled,
-      midiPath,
+      ...target,
       opened: false,
-      message: "GarageBand was not found at /Applications/GarageBand.app."
+      message: "GarageBand was not found at /Applications/GarageBand.app.",
+      scoreEditorSetup: scoreEditorSetup(target.openedKind)
     };
   }
 
-  const result = spawnSync("open", ["-a", "GarageBand", midiPath], {
+  const result = spawnSync("open", ["-a", "GarageBand", target.openedPath], {
     encoding: "utf8",
     timeout: 15_000
   });
@@ -37,18 +43,77 @@ export async function openInGarageBand(input: OpenInGarageBandInput): Promise<{
   if (result.status !== 0) {
     return {
       garageBandInstalled,
-      midiPath,
+      ...target,
       opened: false,
-      message: result.stderr || result.stdout || "GarageBand open command failed."
+      message: result.stderr || result.stdout || "GarageBand open command failed.",
+      scoreEditorSetup: scoreEditorSetup(target.openedKind)
     };
   }
 
   return {
     garageBandInstalled,
-    midiPath,
+    ...target,
     opened: true,
-    message: "MIDI handoff opened in GarageBand. Save the .band project manually from GarageBand if desired."
+    message:
+      target.openedKind === "garageband-project"
+        ? "Saved GarageBand project opened. Its native Score Editor and playback configuration are preserved."
+        : "MIDI handoff opened in GarageBand. Complete the one-time native Score Editor setup, then save the .band project in this song's garageband folder.",
+    scoreEditorSetup: scoreEditorSetup(target.openedKind)
   };
+}
+
+export async function resolveGarageBandOpenTarget(input: OpenInGarageBandInput): Promise<{
+  openedPath: string;
+  openedKind: "garageband-project" | "midi-handoff";
+}> {
+  if (input.preferSavedProject !== false && !input.midiFilePath) {
+    const savedProject = await findSavedGarageBandProject(input.projectSlug);
+    if (savedProject) {
+      return { openedPath: savedProject, openedKind: "garageband-project" };
+    }
+  }
+
+  return {
+    openedPath: await getActiveMidiPath(input.projectSlug, input.midiFilePath),
+    openedKind: "midi-handoff"
+  };
+}
+
+export async function findSavedGarageBandProject(projectSlug: string): Promise<string | undefined> {
+  const handoffDirectory = projectSubdir(projectSlug, "garageband");
+  let entries: string[];
+
+  try {
+    entries = await readdir(handoffDirectory);
+  } catch {
+    return undefined;
+  }
+
+  const candidates = entries
+    .filter((entry) => entry.toLowerCase().endsWith(".band"))
+    .sort((left, right) => left.localeCompare(right));
+
+  for (const candidate of candidates) {
+    const candidatePath = join(handoffDirectory, candidate);
+    if ((await stat(candidatePath)).isDirectory()) {
+      return candidatePath;
+    }
+  }
+
+  return undefined;
+}
+
+function scoreEditorSetup(openedKind: "garageband-project" | "midi-handoff"): string[] {
+  if (openedKind === "garageband-project") {
+    return ["Select the notation track and open its editor if the Score Editor is not already visible."];
+  }
+
+  return [
+    "Import the MIDI as tracks.",
+    "Select the '<song title> - MIDI' software-instrument track, double-click its MIDI region, then choose Score in the editor.",
+    "Play from the GarageBand transport and play your MIDI keyboard through the selected notation track.",
+    "Save the project as garageband/<song-slug>.band so future open_in_garageband calls reopen the native session."
+  ];
 }
 
 export async function diagnoseSetup(): Promise<{
