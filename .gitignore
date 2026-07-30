@@ -15,6 +15,10 @@ songs/**/*.band
 !songs/i-mean-you-practice/garageband/i-mean-you-practice.band
 !songs/i-mean-you-practice/garageband/i-mean-you-practice.band/
 !songs/i-mean-you-practice/garageband/i-mean-you-practice.band/**
+# Track the native session for this user-created practice arrangement.
+!songs/blue-train-practice/garageband/blue-train-practice.band
+!songs/blue-train-practice/garageband/blue-train-practice.band/
+!songs/blue-train-practice/garageband/blue-train-practice.band/**
 songs/**/*.aif
 songs/**/*.aiff
 songs/**/*.wav
