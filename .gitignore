@@ -23,6 +23,10 @@ songs/**/*.band
 !songs/caravan-practice/garageband/caravan-practice.band
 !songs/caravan-practice/garageband/caravan-practice.band/
 !songs/caravan-practice/garageband/caravan-practice.band/**
+# Track the native session for this user-created practice arrangement.
+!songs/body-and-soul-practice/garageband/body-and-soul-practice.band
+!songs/body-and-soul-practice/garageband/body-and-soul-practice.band/
+!songs/body-and-soul-practice/garageband/body-and-soul-practice.band/**
 songs/**/*.aif
 songs/**/*.aiff
 songs/**/*.wav
