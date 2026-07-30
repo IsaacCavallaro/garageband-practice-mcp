@@ -11,6 +11,10 @@ songs/**/.DS_Store
 # practice HTML trackable instead.
 songs/**/*.band/
 songs/**/*.band
+# Track the native session for this user-created practice arrangement.
+!songs/i-mean-you-practice/garageband/i-mean-you-practice.band
+!songs/i-mean-you-practice/garageband/i-mean-you-practice.band/
+!songs/i-mean-you-practice/garageband/i-mean-you-practice.band/**
 songs/**/*.aif
 songs/**/*.aiff
 songs/**/*.wav
